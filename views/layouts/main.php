@@ -49,6 +49,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Genero', 'url' => ['/genero/index']],
             ['label' => 'Director', 'url' => ['/director/index']],
             ['label' => 'Actor', 'url' => ['/actor/index']],
+            ['label' => 'User', 'url' => ['/user/index']],
                 ],
                 ],
             Yii::$app->user->isGuest
