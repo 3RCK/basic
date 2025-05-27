@@ -8,8 +8,8 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
-    public $id;
-    public $username;
+    //public $id;
+    //public $username;
     public $password;
 
     private static $users = [

@@ -2,52 +2,147 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+$this->title = 'HBO-MAX Style Portal';
 ?>
-<div class="site-index">
 
-    <div class="jumbotron text-center bg-transparent mt-5 mb-5">
-        <h1 class="display-4">Congratulations!</h1>
+<style>
+    body {
+        background-color: #141414;
+        color: #ffffff;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+    .navbar-custom {
+        background-color: #000000;
+        padding: 1rem 2rem;
+    }
 
-        <p><a class="btn btn-lg btn-success" href="https://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
+    .navbar-custom a {
+        color: #ffffff;
+        font-weight: bold;
+        margin-right: 20px;
+        text-decoration: none;
+    }
 
-    <div class="body-content">
+    .navbar-custom a:hover {
+        color: #b636ff;
+    }
 
-        <div class="row">
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
+    .hero {
+        background: url('imagenes/fondo.jpg') no-repeat center center;
+        background-size: cover;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        z-index: 1;
+    }
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+    
+    
+    .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(20, 20, 20, 0.6); /* Oscurecer la imagen para que el texto sea legible */
+        z-index: 1;
+    }
+    .hero h1,
+    .hero p,
+    .hero .btn {
+        z-index: 2;
+        position: relative;
+    }
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4 mb-3">
-                <h2>Heading</h2>
+    .hero h1 {
+        font-size: 3rem;
+        color: #ffffff;
+        font-weight: bold;
+    }
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+    .hero p {
+        font-size: 1.3rem;
+        color: #d1d1d1;
+        margin-bottom: 1.5rem;
+    }
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+    .hero .btn {
+        background-color: #b636ff;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        color: white;
+        font-size: 1rem;
+        border-radius: 30px;
+        text-decoration: none;
+    }
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+    .movie-section {
+        padding: 3rem 2rem;
+    }
 
-                <p><a class="btn btn-outline-secondary" href="https://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+    .movie-section h2 {
+        color: #ffffff;
+        margin-bottom: 2rem;
+    }
+
+    .movie-card {
+        background-color: #1f1f1f;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 2rem;
+        transition: transform 0.3s;
+    }
+
+    .movie-card:hover {
+        transform: scale(1.05);
+    }
+
+    .movie-card img {
+        width: 100%;
+        border-radius: 6px;
+    }
+
+    .movie-card-title {
+        font-size: 1.2rem;
+        margin-top: 0.5rem;
+    }
+</style>
+
+
+<!-- Hero Banner -->
+<div class="hero">
+    <h1>HBO-MAX</h1>
+    <p>Disfruta de las mejores películas y series en un solo lugar</p>
+    <a class="btn" href="#">Explorar ahora</a>
+</div>
+
+<!-- Contenido tipo tarjeta -->
+<div class="movie-section container">
+    <h2>Películas destacadas</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="movie-card">
+                <img src="https://www.themoviedb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Batman Poster" style="height: 500px;">
+                <center><div class="movie-card-title">THE BATMAN</div></center>
             </div>
         </div>
-
+        <div class="col-md-4">
+            <div class="movie-card">
+                <img src="https://www.themoviedb.org/t/p/original/iGoXIpQb7Pot00EEdwpwPajheZ5.jpg" alt="Harry Potter 7 Parte 1" style="height: 500px;">
+                <center><div class="movie-card-title">HARRY POTTER Y LAS RELIQUIAS DE LA MUERTE: PARTE 2</div></center>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="movie-card">
+                <img src="https://www.themoviedb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" alt="Interestelar" style="height: 500px;">
+                <center><div class="movie-card-title">INTERESTELAR</div></center>
+            </div>
+        </div>
     </div>
 </div>

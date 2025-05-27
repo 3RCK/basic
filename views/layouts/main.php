@@ -37,7 +37,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
         'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
     ]);
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-custom d-flex align-items-center'],
         'items' => [
             ['label' => 'Inicio', 'url' => ['/site/index']],
             //['label' => 'Sobre nosotros', 'url' => ['/site/about']],
@@ -50,14 +50,17 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             ['label' => 'Director', 'url' => ['/director/index']],
             ['label' => 'Actor', 'url' => ['/actor/index']],
             ['label' => 'User', 'url' => ['/user/index']],
+            ( !Yii::$app->user->isGuest && Yii::$app->user->identity->role != 'admin') ? '' : ['label' => 'User', 'url' => ['/user/index']]
                 ],
                 ],
+            Yii::$app->user->isGuest ? '' :['label' => 'Cambiar password', 'url' => ['/user/change-password']],
+
             Yii::$app->user->isGuest
                 ? ['label' => 'Iniciar sesión', 'url' => ['/site/login']]
                 : '<li class="nav-item">'
                     . Html::beginForm(['/site/logout'])
                     . Html::submitButton(
-                        'Cerrar sesión (' . Yii::$app->user->identity->username . ')',
+                        'Cerrar sesión (' . Yii::$app->user->identity->apellido . '  ' .  Yii::$app->user->identity->nombre  . ')' . Yii::$app->user->identity->role,
                         ['class' => 'nav-link btn btn-link logout']
                     )
                     . Html::endForm()
