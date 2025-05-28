@@ -39,11 +39,12 @@ NavBar::begin([
     'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
 ]);
 
-echo Nav::widget([
-    'options' => ['class' => 'navbar-custom d-flex align-items-center w-100 justify-content-between'],
-    'items' => [
-        ['label' => ' Inicio', 'url' => ['/site/index'], 'encode' => false],
+$user = Yii::$app->user;
+$items = [];
 
+if (!$user->isGuest && $user->identity->role === 'user') {
+    $items = [
+        ['label' => 'Inicio', 'url' => ['/site/index'], 'encode' => false],
         [
             'label' => 'Gestionar Películas',
             'encode' => false,
@@ -52,34 +53,64 @@ echo Nav::widget([
                 ['label' => 'Genero', 'url' => ['/genero/index']],
                 ['label' => 'Director', 'url' => ['/director/index']],
                 ['label' => 'Actor', 'url' => ['/actor/index']],
+                ['label' => 'Portada', 'url' => ['/portada/index']],
+            ],
+        ],
+        '<li class="nav-item ms-auto">'
+            . Html::beginForm(['/site/logout'])
+            . Html::submitButton(
+                'Cerrar sesión (' 
+                . $user->identity->apellido . ' ' . $user->identity->nombre . ')',
+                ['class' => 'nav-link btn btn-link logout']
+            )
+            . Html::endForm()
+            . '</li>'
+    ];
+} else {
+    
+    $items = [
+        ['label' => ' Inicio', 'url' => ['/site/index'], 'encode' => false],
+        [
+            'label' => 'Gestionar Películas',
+            'encode' => false,
+            'items' => [
+                ['label' => 'Pelicula', 'url' => ['/pelicula/index']],
+                ['label' => 'Genero', 'url' => ['/genero/index']],
+                ['label' => 'Director', 'url' => ['/director/index']],
+                ['label' => 'Actor', 'url' => ['/actor/index']],
+                ['label' => 'Portada', 'url' => ['/portada/index']],
                 (!Yii::$app->user->isGuest && Yii::$app->user->identity->role != 'admin') ? '' : ['label' => 'User', 'url' => ['/user/index']]
             ],
         ],
-
-        Yii::$app->user->isGuest ? '' : [
+        $user->isGuest ? ['label' => 'Iniciar sesión', 'url' => ['/site/login']] : [
             'label' => 'Cambiar password',
             'url' => ['/user/change-password'],
             'encode' => false
         ],
-
-        Yii::$app->user->isGuest
-            ? ['label' => 'Iniciar sesión', 'url' => ['/site/login']]
+        $user->isGuest
+            ? ''
             : '<li class="nav-item ms-auto">'
                 . Html::beginForm(['/site/logout'])
                 . Html::submitButton(
                     'Cerrar sesión (' 
-                    . Yii::$app->user->identity->apellido . ' ' . Yii::$app->user->identity->nombre . ')'
-                    . Yii::$app->user->identity->role,
-                    ['class' => 'nav-link btn btn-link logout', 'encode' => false]
+                    . $user->identity->apellido . ' ' . $user->identity->nombre . ')'
+                    . $user->identity->role,
+                    ['class' => 'nav-link btn btn-link logout']
                 )
                 . Html::endForm()
                 . '</li>'
-    ],
+    ];
+}
+
+echo Nav::widget([
+    'options' => ['class' => 'navbar-custom d-flex align-items-center w-100 justify-content-between'],
+    'items' => $items,
 ]);
 
 NavBar::end();
 ?>
 </header>
+
 
 
 

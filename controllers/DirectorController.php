@@ -37,15 +37,16 @@ class DirectorController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        $searchModel = new DirectorSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+{
+    $searchModel = new DirectorSearch();
+    $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+    return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+    ]);
+}
+
 
     /**
      * Displays a single Director model.

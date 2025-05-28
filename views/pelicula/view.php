@@ -32,11 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'idPelicula',
             //'portada',
             [
-            'attribute' => 'portada',
-            'format' => 'html',
-            'value' => function ($model) {
-             return Html::img(Yii::getAlias('@web') . '/portadas/' . $model->portada, ['style' => 'width: 100px']);
-                },
+                'attribute' => 'portada',
+                'format' => 'html',
+                'value' => function ($model) {
+            if (!empty($model->portada) && file_exists(Yii::getAlias('@webroot') . '/portadas/' . $model->portada)) {
+                return Html::img(Yii::getAlias('@web') . '/portadas/' . $model->portada, ['style' => 'width: 100px']);
+            } else {
+                // Imagen por defecto si no hay portada o no existe el archivo
+                return Html::img(Yii::getAlias('@web') . '/portadas/default.jpg', ['style' => 'width: 100px']);
+            }
+        },
             ],
             'titulo',
             'sipnosis',

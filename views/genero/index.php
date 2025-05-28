@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\grid\ActionColumn;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /** @var yii\web\View $this */
 /** @var app\models\GeneroSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
@@ -13,35 +14,49 @@ use yii\widgets\Pjax;
 $this->title = Yii::t('app', 'Generos');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="genero-index">
 
+<div class="genero-index">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a(Yii::t('app', 'Create Genero'), ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role === 'admin'): ?>
 
-    <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+        <p>
+            <?= Html::a(Yii::t('app', 'Create Genero'), ['create'], ['class' => 'btn btn-success']) ?>
+        </p>
 
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
+        <?php Pjax::begin(); ?>
+            <?= GridView::widget([
+                'dataProvider' => $dataProvider,
+                'filterModel' => $searchModel,
+                'columns' => [
+                    ['class' => 'yii\grid\SerialColumn'],
+                    'idGenero',
+                    'nombre',
+                    'descripcion',
+                    [
+                        'class' => ActionColumn::className(),
+                        'urlCreator' => function ($action, Genero $model, $key, $index, $column) {
+                            return Url::toRoute([$action, 'idGenero' => $model->idGenero]);
+                        }
+                    ],
+                ],
+            ]); ?>
+        <?php Pjax::end(); ?>
 
-            'idGenero',
-            'nombre',
-            'descripcion',
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Genero $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'idGenero' => $model->idGenero]);
-                 }
-            ],
-        ],
-    ]); ?>
+    <?php else: ?>
 
-    <?php Pjax::end(); ?>
+        <div class="row">
+            <?php foreach ($dataProvider->getModels() as $genero): ?>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= Html::encode($genero->nombre) ?></h5>
+                            <p class="card-text"><?= Html::encode($genero->descripcion) ?></p>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
 
+    <?php endif; ?>
 </div>

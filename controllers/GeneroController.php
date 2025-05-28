@@ -36,7 +36,7 @@ class GeneroController extends Controller
      *
      * @return string
      */
-    public function actionIndex()
+        public function actionIndex()
     {
         $searchModel = new GeneroSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);

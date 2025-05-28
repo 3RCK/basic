@@ -37,15 +37,15 @@ class ActorController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        $searchModel = new ActorSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+{
+    $searchModel = new ActorSearch();
+    $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+    return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+    ]);
+}
 
     /**
      * Displays a single Actor model.

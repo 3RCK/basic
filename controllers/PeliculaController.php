@@ -39,15 +39,15 @@ class PeliculaController extends Controller
      * @return string
      */
     public function actionIndex()
-    {
-        $searchModel = new PeliculaSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
+{
+    $searchModel = new PeliculaSearch();
+    $dataProvider = $searchModel->search($this->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
+    return $this->render('index', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
+    ]);
+}
 
     /**
      * Displays a single Pelicula model.
