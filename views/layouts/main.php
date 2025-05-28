@@ -10,6 +10,7 @@ use yii\bootstrap5\Html;
 use yii\bootstrap5\Nav;
 use yii\bootstrap5\NavBar;
 
+
 AppAsset::register($this);
 
 $this->registerCsrfMetaTags();
@@ -30,46 +31,58 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
 <?php $this->beginBody() ?>
 
 <header id="header">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-custom d-flex align-items-center'],
-        'items' => [
-            ['label' => 'Inicio', 'url' => ['/site/index']],
-            //['label' => 'Sobre nosotros', 'url' => ['/site/about']],
-            //['label' => 'Contactenos', 'url' => ['/site/contact']],
-            [
-                'label' => 'Gestionar Peliculas',
-                'items' => [
-                    ['label' => 'Pelicula', 'url' => ['/pelicula/index']],
-            ['label' => 'Genero', 'url' => ['/genero/index']],
-            ['label' => 'Director', 'url' => ['/director/index']],
-            ['label' => 'Actor', 'url' => ['/actor/index']],
-            ['label' => 'User', 'url' => ['/user/index']],
-            ( !Yii::$app->user->isGuest && Yii::$app->user->identity->role != 'admin') ? '' : ['label' => 'User', 'url' => ['/user/index']]
-                ],
-                ],
-            Yii::$app->user->isGuest ? '' :['label' => 'Cambiar password', 'url' => ['/user/change-password']],
+<?php
 
-            Yii::$app->user->isGuest
-                ? ['label' => 'Iniciar sesión', 'url' => ['/site/login']]
-                : '<li class="nav-item">'
-                    . Html::beginForm(['/site/logout'])
-                    . Html::submitButton(
-                        'Cerrar sesión (' . Yii::$app->user->identity->apellido . '  ' .  Yii::$app->user->identity->nombre  . ')' . Yii::$app->user->identity->role,
-                        ['class' => 'nav-link btn btn-link logout']
-                    )
-                    . Html::endForm()
-                    . '</li>'
-        ]
-    ]);
-    NavBar::end();
-    ?>
+NavBar::begin([
+    'brandLabel' => Yii::$app->name,
+    'brandUrl' => Yii::$app->homeUrl,
+    'options' => ['class' => 'navbar-expand-md navbar-dark bg-dark fixed-top']
+]);
+
+echo Nav::widget([
+    'options' => ['class' => 'navbar-custom d-flex align-items-center w-100 justify-content-between'],
+    'items' => [
+        ['label' => ' Inicio', 'url' => ['/site/index'], 'encode' => false],
+
+        [
+            'label' => 'Gestionar Películas',
+            'encode' => false,
+            'items' => [
+                ['label' => 'Pelicula', 'url' => ['/pelicula/index']],
+                ['label' => 'Genero', 'url' => ['/genero/index']],
+                ['label' => 'Director', 'url' => ['/director/index']],
+                ['label' => 'Actor', 'url' => ['/actor/index']],
+                (!Yii::$app->user->isGuest && Yii::$app->user->identity->role != 'admin') ? '' : ['label' => 'User', 'url' => ['/user/index']]
+            ],
+        ],
+
+        Yii::$app->user->isGuest ? '' : [
+            'label' => 'Cambiar password',
+            'url' => ['/user/change-password'],
+            'encode' => false
+        ],
+
+        Yii::$app->user->isGuest
+            ? ['label' => 'Iniciar sesión', 'url' => ['/site/login']]
+            : '<li class="nav-item ms-auto">'
+                . Html::beginForm(['/site/logout'])
+                . Html::submitButton(
+                    'Cerrar sesión (' 
+                    . Yii::$app->user->identity->apellido . ' ' . Yii::$app->user->identity->nombre . ')'
+                    . Yii::$app->user->identity->role,
+                    ['class' => 'nav-link btn btn-link logout', 'encode' => false]
+                )
+                . Html::endForm()
+                . '</li>'
+    ],
+]);
+
+NavBar::end();
+?>
 </header>
+
+
+
 
 <main id="main" class="flex-shrink-0" role="main">
     <div class="container">

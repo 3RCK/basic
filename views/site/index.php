@@ -29,7 +29,7 @@ $this->title = 'HBO-MAX Style Portal';
     }
 
     .hero {
-        background: url('imagenes/fondo.jpg') no-repeat center center;
+        background: url('https://d30gl8nkrjm6kp.cloudfront.net/articulos/articulos-425772.jpg') no-repeat center center;
         background-size: cover;
         height: 500px;
         display: flex;
@@ -50,7 +50,7 @@ $this->title = 'HBO-MAX Style Portal';
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(20, 20, 20, 0.6); /* Oscurecer la imagen para que el texto sea legible */
+        background: rgba(20, 20, 20, 0.6); 
         z-index: 1;
     }
     .hero h1,
@@ -112,17 +112,69 @@ $this->title = 'HBO-MAX Style Portal';
         font-size: 1.2rem;
         margin-top: 0.5rem;
     }
+
+    .navbar-custom {
+        width: 100vw; 
+        left: 0;
+        top: 0;
+        position: relative; 
+        background: linear-gradient(to right, #000000, #3b0a78, #b636ff);
+        padding: 1rem 2rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        margin: 0;
+    }
+
+
+    .navbar-custom a,
+    .navbar-custom .dropdown-toggle {
+        color: #ffffff !important;
+        font-weight: bold;
+        margin-right: 20px;
+        font-size: 1.05rem;
+        transition: color 0.3s;
+    }
+
+    .navbar-custom a:hover,
+    .navbar-custom .dropdown-toggle:hover {
+        color: #ffb3ff !important;
+        text-decoration: none;
+    }
+
+    .navbar-custom i {
+        margin-right: 6px;
+        color: #ff66ff;
+        font-size: 1.1rem;
+    }
+
+       
+    .navbar-custom .dropdown-menu {
+        background: linear-gradient(to right, #000000, #3b0a78, #b636ff);
+        border: none;
+    }
+
+    
+    .navbar-custom .dropdown-menu .dropdown-item {
+        color: #ffffff;
+        font-weight: bold;
+    }
+
+    .navbar-custom .dropdown-menu .dropdown-item:hover {
+        background-color: rgba(255, 255, 255, 0.1); 
+        color: #ffb3ff;
+    }
+
+
 </style>
 
 
-<!-- Hero Banner -->
+
 <div class="hero">
     <h1>HBO-MAX</h1>
     <p>Disfruta de las mejores películas y series en un solo lugar</p>
     <a class="btn" href="#">Explorar ahora</a>
 </div>
 
-<!-- Contenido tipo tarjeta -->
+
 <div class="movie-section container">
     <h2>Películas destacadas</h2>
     <div class="row">
