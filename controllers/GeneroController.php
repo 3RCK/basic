@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Genero;
 use app\models\GeneroSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * GeneroController implements the CRUD actions for Genero model.
@@ -22,7 +24,7 @@ class GeneroController extends Controller
             parent::behaviors(),
             [
                 'verbs' => [
-                    'class' => VerbFilter::className(),
+                    'class' => VerbFilter::class,
                     'actions' => [
                         'delete' => ['POST'],
                     ],
@@ -36,7 +38,7 @@ class GeneroController extends Controller
      *
      * @return string
      */
-        public function actionIndex()
+    public function actionIndex()
     {
         $searchModel = new GeneroSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
@@ -49,7 +51,7 @@ class GeneroController extends Controller
 
     /**
      * Displays a single Genero model.
-     * @param int $idGenero Id Genero
+     * @param int $idGenero
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
      */
@@ -70,7 +72,22 @@ class GeneroController extends Controller
         $model = new Genero();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
+            $model->load($this->request->post());
+
+            // Capturar archivo
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+            if ($model->imageFile) {
+                // Generar nombre único
+                $imageName = 'genero_' . time() . '.' . $model->imageFile->extension;
+                $model->foto = $imageName;
+            }
+
+            if ($model->save()) {
+                if ($model->imageFile) {
+                    $uploadPath = Yii::getAlias('@webroot/generos/') . $model->foto;
+                    $model->imageFile->saveAs($uploadPath);
+                }
                 return $this->redirect(['view', 'idGenero' => $model->idGenero]);
             }
         } else {
@@ -85,42 +102,81 @@ class GeneroController extends Controller
     /**
      * Updates an existing Genero model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $idGenero Id Genero
+     * @param int $idGenero
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($idGenero)
     {
         $model = $this->findModel($idGenero);
+        $message = '';
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'idGenero' => $model->idGenero]);
+        if ($this->request->isPost) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->load($this->request->post())) {
+                    $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+                    if ($model->imageFile) {
+                        // Eliminar foto anterior
+                        $model->deleteFoto();
+
+                        // Nombre único para la nueva foto
+                        $imageName = 'genero_' . time() . '.' . $model->imageFile->extension;
+                        $model->foto = $imageName;
+                    }
+
+                    if ($model->save()) {
+                        if ($model->imageFile) {
+                            $uploadPath = Yii::getAlias('@webroot/generos/') . $model->foto;
+                            $model->imageFile->saveAs($uploadPath);
+                        }
+
+                        $transaction->commit();
+                        return $this->redirect(['view', 'idGenero' => $model->idGenero]);
+                    } else {
+                        $message = 'Error al guardar los cambios.';
+                        $transaction->rollBack();
+                    }
+                } else {
+                    $message = 'Error al cargar los datos del formulario.';
+                    $transaction->rollBack();
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                $message = 'Error al actualizar el género: ' . $e->getMessage();
+            }
         }
 
         return $this->render('update', [
             'model' => $model,
+            'message' => $message,
         ]);
     }
 
     /**
      * Deletes an existing Genero model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $idGenero Id Genero
+     * @param int $idGenero
      * @return \yii\web\Response
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($idGenero)
     {
-        $this->findModel($idGenero)->delete();
+        $model = $this->findModel($idGenero);
+
+        // Eliminar archivo de foto si existe
+        $model->deleteFoto();
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }
 
     /**
      * Finds the Genero model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $idGenero Id Genero
-     * @return Genero the loaded model
+     * @param int $idGenero
+     * @return Genero
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($idGenero)

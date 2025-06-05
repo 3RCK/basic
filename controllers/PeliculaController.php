@@ -67,76 +67,55 @@ class PeliculaController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
-    public function actionCreate()
-    {
-        $model = new Pelicula();
-        $message = '';
+    public function actionUpdate($idPelicula)
+{
+    $model = $this->findModel($idPelicula);
+    $message = '';
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'idPelicula' => $model->idPelicula]);
-            }
-        } else {
-            $model->loadDefaultValues();
-        }
-        if ($this->request->isPost){
-            $transaction = Yii::$app->db->beginTransaction();
-            try{
-                if($model->load($this->request->post())){
-                    $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-                    if ($model->save() && (!$model->imageFile || $model->upload())) {
-                        $transaction->commit();
-                        return $this->redirect(['view', 'idpelicula' => $model->idpelicula]);
-                    }else{
-                        $message = 'Error al guardar la pelicula';
-                        $transaction->rollBack();
-                    }
-                }else{
-                    $message = 'Error al cargar la portada';
-                    $transaction->rollBack();
+    if ($this->request->isPost) {
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->load($this->request->post())) {
+                // Captura del archivo subido
+                $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+
+                if ($model->imageFile) {
+                    // Eliminar portada anterior si existe
+                    $model->deletePortada();
+
+                    // Generar nombre único para el nuevo archivo
+                    $imageName = 'pelicula_' . time() . '.' . $model->imageFile->extension;
+                    $model->portada = $imageName;
                 }
 
-            }catch(\Exception $e){
-                    $transaction->rollBack();
-                    $message = 'Error al guardar la pelicula';
-            }
-        }else{
-            $model->loadDefaultValues();
-        }
-        return $this->render('create', [
-            'model' => $model,
-            'message' => $message,
-        ]);
-    }
+                if ($model->save()) {
+                    if ($model->imageFile) {
+                        $uploadPath = Yii::getAlias('@webroot/portadas/') . $model->portada;
+                        $model->imageFile->saveAs($uploadPath);
+                    }
 
-    /**
-     * Updates an existing Pelicula model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $idPelicula Id Pelicula
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($idPelicula)
-    {
-        $model = $this->findModel($idPelicula);
-        $message = '';
-        if ($this->request->isPost && $model->load($this->request->post())) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-
-                if ($model->save() && (!$model->imageFile || $model->upload())) {
+                    $transaction->commit();
                     return $this->redirect(['view', 'idPelicula' => $model->idPelicula]);
                 } else {
-                    $message = 'Error al guardar la película';
+                    $message = 'Error al guardar los cambios.';
+                    $transaction->rollBack();
                 }
+            } else {
+                $message = 'Error al cargar los datos del formulario.';
+                $transaction->rollBack();
             }
-
-            $model->actors = ArrayHelper::getColumn($model->getActorIdActor()->asArray()->all(), 'idActor');
-
-        return $this->render('update', [
-            'model' => $model,
-            'message' => $message,
-        ]);
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            $message = 'Error al actualizar la película: ' . $e->getMessage();
+        }
     }
+
+    return $this->render('update', [
+        'model' => $model,
+        'message' => $message,
+    ]);
+}
+
 
     /**
      * Deletes an existing Pelicula model.

@@ -71,32 +71,27 @@ class Pelicula extends \yii\db\ActiveRecord
             'genders' => Yii::t('app', 'Genero'),
         ];
     }
-    public function upload(){
-      
+    public function upload()
+{
     if ($this->validate()) {
-        if ($this->isNewRecord) {
-            if (!$this->save(false)) {
-                return false;
+        // Nombre de archivo único
+        $filename = 'pelicula_' . time() . '.' . $this->imageFile->extension;
+        $path = Yii::getAlias('@webroot/portadas/') . $filename;
+
+        // Guardar archivo físico
+        if ($this->imageFile->saveAs($path)) {
+            // Eliminar portada anterior si existe
+            if ($this->portada && $this->portada !== $filename) {
+                $this->deletePortada();
             }
+
+            // Guardar nombre en el atributo y guardar en BD
+            $this->portada = $filename;
+            return $this->save(false); // Guardar sin volver a validar
         }
-
-        if ($this->imageFile instanceof UploadedFile) {
-            $filename = $this->idPelicula . '_' . $this->anio . '_movie_' . date('Ymd_His') . '.' . $this->imageFile->extension;
-            $path = Yii::getAlias('@webroot/portadas/') . $filename;
-
-            if ($this->imageFile->saveAs($path)) {
-                if ($this->portada && $this->portada != $filename) {
-                    $this->deletePortada();
-                }
-
-                $this->portada = $filename;
-                
-                }
-            }
-                return $this->save(false);
-        }
-            return false;
     }
+    return false;
+}
 
     public function deletePortada(){
     $path = Yii::getAlias('@webroot/portadas/') . $this->portada;

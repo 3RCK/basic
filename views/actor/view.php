@@ -20,7 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'idActor' => $model->idActor], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                'confirm' => Yii::t('app', '¿Estás seguro de que quieres eliminar este actor?'),
                 'method' => 'post',
             ],
         ]) ?>
@@ -30,6 +30,21 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'idActor',
+            [
+                'attribute' => 'foto',
+                'format' => 'html',
+                'value' => function ($model) {
+                    $ruta = Yii::getAlias('@webroot') . '/fotos/' . $model->foto;
+                    $url = Yii::getAlias('@web') . '/fotos/' . $model->foto;
+                    $default = Yii::getAlias('@web') . '/fotos/default.jpg';
+
+                    if (!empty($model->foto) && file_exists($ruta)) {
+                        return Html::img($url, ['style' => 'width: 100px']);
+                    } else {
+                        return Html::img($default, ['style' => 'width: 100px']);
+                    }
+                },
+            ],
             'nombre',
             'apellido',
             'biografia',

@@ -10,16 +10,40 @@ use yii\widgets\ActiveForm;
 
 <div class="director-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data']
+    ]); ?>
 
-    <?= $form->field($model, 'nombre')->textInput(['maxlength' => true]) ?>
+    <?php if ($model->foto): ?>
+        <div class="form-group">
+            <?= Html::label('Imagen actual') ?>
+            <div>
+                <?= Html::img(Yii::getAlias('@web/directores/' . $model->foto), ['style' => 'width: 100px']) ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
-    <?= $form->field($model, 'apellido')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'imageFile')->fileInput()->label('Subir nueva imagen') ?>
 
-    <?= $form->field($model, 'fecha_nacimiento')->textInput() ?>
+    <?= $form->field($model, 'nombre')->textInput([
+        'maxlength' => true,
+        'placeholder' => 'Nombre del director',
+        'required' => true
+    ]) ?>
+
+    <?= $form->field($model, 'apellido')->textInput([
+        'maxlength' => true,
+        'placeholder' => 'Apellido del director',
+        'required' => true
+    ]) ?>
+
+    <?= $form->field($model, 'fecha_nacimiento')->textInput([
+        'type' => 'date',
+        'placeholder' => 'YYYY-MM-DD'
+    ]) ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Guardar'), ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

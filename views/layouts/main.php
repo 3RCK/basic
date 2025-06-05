@@ -53,7 +53,6 @@ if (!$user->isGuest && $user->identity->role === 'user') {
                 ['label' => 'Genero', 'url' => ['/genero/index']],
                 ['label' => 'Director', 'url' => ['/director/index']],
                 ['label' => 'Actor', 'url' => ['/actor/index']],
-                ['label' => 'Portada', 'url' => ['/portada/index']],
             ],
         ],
         '<li class="nav-item ms-auto">'
@@ -78,7 +77,6 @@ if (!$user->isGuest && $user->identity->role === 'user') {
                 ['label' => 'Genero', 'url' => ['/genero/index']],
                 ['label' => 'Director', 'url' => ['/director/index']],
                 ['label' => 'Actor', 'url' => ['/actor/index']],
-                ['label' => 'Portada', 'url' => ['/portada/index']],
                 (!Yii::$app->user->isGuest && Yii::$app->user->identity->role != 'admin') ? '' : ['label' => 'User', 'url' => ['/user/index']]
             ],
         ],
@@ -128,7 +126,7 @@ NavBar::end();
 <footer id="footer" class="mt-auto py-3 bg-light">
     <div class="container">
         <div class="row text-muted">
-            <div class="col-md-6 text-center text-md-start">&copy; My Company <?= date('Y') ?></div>
+            <div class="col-md-6 text-center text-md-start">&copy; MAX <?= date('Y') ?></div>
             <div class="col-md-6 text-center text-md-end"><?= Yii::powered() ?></div>
         </div>
     </div>

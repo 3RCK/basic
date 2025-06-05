@@ -111,6 +111,7 @@ $this->title = 'HBO-MAX Style Portal';
     .movie-card-title {
         font-size: 1.2rem;
         margin-top: 0.5rem;
+        color: white;
     }
 
     .navbar-custom {
@@ -180,20 +181,26 @@ $this->title = 'HBO-MAX Style Portal';
     <div class="row">
         <div class="col-md-4">
             <div class="movie-card">
-                <img src="https://www.themoviedb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Batman Poster" style="height: 500px;">
-                <center><div class="movie-card-title">THE BATMAN</div></center>
+                <a href="<?= \yii\helpers\Url::to(['/pelicula/index']) ?>" style="text-decoration: none;">
+                    <img src="https://www.themoviedb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg" alt="The Batman Poster" style="height: 500px;">
+                    <center><div class="movie-card-title">THE BATMAN</div></center>
+                </a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="movie-card">
-                <img src="https://www.themoviedb.org/t/p/original/iGoXIpQb7Pot00EEdwpwPajheZ5.jpg" alt="Harry Potter 7 Parte 1" style="height: 500px;">
-                <center><div class="movie-card-title">HARRY POTTER Y LAS RELIQUIAS DE LA MUERTE: PARTE 2</div></center>
+                <a href="<?= \yii\helpers\Url::to(['/pelicula/index']) ?>" style="text-decoration: none;">
+                    <img src="https://www.themoviedb.org/t/p/original/iGoXIpQb7Pot00EEdwpwPajheZ5.jpg" alt="Harry Potter 7 Parte 1" style="height: 500px;">
+                    <center><div class="movie-card-title">HARRY POTTER Y LAS RELIQUIAS DE LA MUERTE: PARTE 1</div></center>
+                </a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="movie-card">
-                <img src="https://www.themoviedb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" alt="Interestelar" style="height: 500px;">
-                <center><div class="movie-card-title">INTERESTELAR</div></center>
+                <a href="<?= \yii\helpers\Url::to(['/pelicula/index']) ?>" style="text-decoration: none;">
+                    <img src="https://www.themoviedb.org/t/p/original/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" alt="Interestelar" style="height: 500px;">
+                    <center><div class="movie-card-title">INTERESTELAR</div></center>
+                </a>
             </div>
         </div>
     </div>
